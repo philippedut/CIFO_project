@@ -1,10 +1,10 @@
-class Team():
-    # BUDGET_LIMIT = 750  # in million €
+class Team(BUDGET_LIMIT=750):
+    #BUDGET_LIMIT = 750  # in million €
     """Class to represent a team"""
     def __init__(self, team_id):
         self.id = team_id
         self.players = []
-        self.budget_limit = BUDGET_LIMIT
+        self.budget_limit = Team.BUDGET_LIMIT
     
     def add_player(self, player):
         self.players.append(player)
