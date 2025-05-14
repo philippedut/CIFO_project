@@ -25,6 +25,6 @@ To generate a valid league configuration that follows all constraints and ensure
 | Name                  | Student Number  |
 |-----------------------|----------------|
 | Philippe Dutranoit   | 20240518        |
-| Josua Wehr        | 202040501 |
+| Joshua Wehr        | 202040501 |
 | Benedikt Ruggaber | 202040500 |
-| Daan Van Holten  | Student Number 4 |
+| Daan Van Holten  | 20240681 |
