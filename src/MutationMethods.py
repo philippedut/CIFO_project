@@ -1,6 +1,6 @@
 import random
 
-from src import League 
+from League import League 
 
 NUM_TEAMS = 5
 

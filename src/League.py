@@ -1,6 +1,6 @@
-import numby as np
+import numpy as np
 
-from src import Team
+from Team import Team
 
 
 NUM_TEAMS = 5

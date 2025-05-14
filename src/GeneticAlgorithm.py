@@ -3,8 +3,11 @@ import time
 # Visulization should be done in the main, not here
 import matplotlib.pyplot as plt
 
-
-from src import League, CrossoverMethods, SelectionMethods, MutationMethods
+# Custom classes 
+from League import League
+from CrossoverMethods import  CrossoverMethods
+from SelectionMethods import SelectionMethods 
+from MutationMethods import MutationMethods
 
 BUDGET_LIMIT = 750 
 
