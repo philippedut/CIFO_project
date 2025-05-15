@@ -112,7 +112,7 @@ class GeneticAlgorithm:
         
         return std_dev + budget_penalty
     
-    def run(self):
+    #def run(self):
         """Run the genetic algorithm"""
         print("Starting genetic algorithm...")
         start_time = time.time()
@@ -201,6 +201,76 @@ class GeneticAlgorithm:
         
         return self.best_solution
     
+    def run(self):
+        """Run the genetic algorithm with fixed operators"""
+        print("Starting genetic algorithm...")
+        start_time = time.time()
+        
+        # Initialize population
+        print("Initializing population...")
+        self.initialize_population()
+        
+        # Evaluate initial population
+        for individual in self.population:
+            fitness = self.fitness(individual)
+            if fitness < self.best_fitness:
+                self.best_fitness = fitness
+                self.best_solution = individual
+        
+        print(f"Initial best fitness: {self.best_fitness:.4f}")
+        self.fitness_history.append(self.best_fitness)
+        
+        # Main evolution loop
+        for generation in range(self.generations):
+            # Create new population
+            new_population = []
+            
+            # Elitism: keep the best individual
+            new_population.append(self.best_solution)
+            
+            # Fill the rest via tournament selection, team-based crossover, and swap mutation
+            while len(new_population) < self.pop_size:
+                # Selection (always tournament)
+                parent1 = SelectionMethods.tournament_selection(self.population, self.fitness)
+                parent2 = SelectionMethods.tournament_selection(self.population, self.fitness)
+                
+                # Ensure parents differ
+                retry = 0
+                while parent1 is parent2 and retry < 5:
+                    parent2 = SelectionMethods.tournament_selection(self.population, self.fitness)
+                    retry += 1
+                
+                # Crossover (always team-based)
+                offspring = CrossoverMethods.team_based_crossover(parent1, parent2, len(self.players))
+                if offspring is None:
+                    offspring = self.create_random_individual()
+                
+                # Mutation (always swap)
+                offspring = MutationMethods.swap_mutation(offspring)
+                
+                new_population.append(offspring)
+            
+            # Replace old population
+            self.population = new_population
+            
+            # Evaluate and update best
+            for individual in self.population:
+                fitness = self.fitness(individual)
+                if fitness < self.best_fitness:
+                    self.best_fitness = fitness
+                    self.best_solution = individual
+            
+            # Record history and print progress
+            self.fitness_history.append(self.best_fitness)
+            if generation % 10 == 0 or generation == self.generations - 1:
+                elapsed = time.time() - start_time
+                print(f"Generation {generation}: Best fitness = {self.best_fitness:.4f} (Time: {elapsed:.2f}s)")
+        
+        print(f"Evolution completed in {time.time() - start_time:.2f} seconds")
+        print(f"Final best fitness: {self.best_fitness:.4f}")
+    
+        return self.best_solution
+
     def plot_fitness_history(self):
         """Plot the fitness history"""
         plt.figure(figsize=(10, 6))
