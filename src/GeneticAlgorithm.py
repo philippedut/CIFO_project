@@ -122,7 +122,7 @@ _mutations = {
 for sel_name, sel_fn in _selections.items():
     for mut_name, mut_fn in _mutations.items():
         for cross_name, cross_fn in _crossovers.items():
-            cls_name = f"GenticAlgorithm_{sel_name}_{mut_name}_{cross_name}"
+            cls_name = f"GeneticAlgorithm_{sel_name}_{mut_name}_{cross_name}"
             globals()[cls_name] = type(
                 cls_name,
                 (BaseGeneticAlgorithm,),
