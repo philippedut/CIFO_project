@@ -5,6 +5,7 @@ from League import League
 from CrossoverMethods import CrossoverMethods
 from SelectionMethods import SelectionMethods
 from MutationMethods import MutationMethods
+import matplotlib.pyplot as plt
 
 BUDGET_LIMIT = 750
 
