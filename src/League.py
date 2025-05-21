@@ -7,8 +7,6 @@ NUM_TEAMS = 5
 
 class League:
     """Class to represent the entire league (a solution)"""
-    
-
     def __init__(self, num_teams=NUM_TEAMS):
         self.teams = [Team(i) for i in range(num_teams)]
     

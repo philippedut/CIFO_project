@@ -120,7 +120,7 @@ class MutationMethods:
         team_idx = random.randint(0, NUM_TEAMS - 1)
         
         # Group players by position (we need to maintain position constraints)
-        gk_players = [p for p in mutated.teams[team_idx].players if p.position == 'GK']
+        gk_players = [p for p in mutated.teams[team_idx].players if p.position == 'GK'] 
         def_players = [p for p in mutated.teams[team_idx].players if p.position == 'DEF']
         mid_players = [p for p in mutated.teams[team_idx].players if p.position == 'MID']
         fwd_players = [p for p in mutated.teams[team_idx].players if p.position == 'FWD']
@@ -151,6 +151,52 @@ class MutationMethods:
                         mutated.teams[other_team_idx].add_player(def_players[i])
                         mutated.teams[team_idx].add_player(other_def)
         
-        # Similar scrambling for MID and FWD can be implemented here
-        
+        # Scramble MID      
+        if len(mid_players) >= 2:
+            for i in range(len(mid_players)):
+                swap_idx = random.randint(0, len(mid_players) - 1)
+                # Check if we can swap with another team
+                if random.random() < 0.5:
+                    # Randomly select another team
+                    other_team_idx = random.randint(0, NUM_TEAMS - 1)
+                    while other_team_idx == team_idx:
+                        other_team_idx = random.randint(0, NUM_TEAMS - 1)
+                    
+                    # Get MID players from the other team
+                    other_mids = [p for p in mutated.teams[other_team_idx].players if p.position == 'MID']
+                    if other_mids:
+                        # Swap with a random MID from the other team
+                        other_mid = random.choice(other_mids)
+                        mutated.teams[other_team_idx].players.remove(other_mid)
+                        mutated.teams[team_idx].players.remove(mid_players[i])
+                        
+                        mutated.teams[other_team_idx].add_player(mid_players[i])
+                        mutated.teams[team_idx].add_player(other_mid)
+                mutated.teams[team_idx].players[i], mutated.teams[team_idx].players[swap_idx] = \
+                    mutated.teams[team_idx].players[swap_idx], mutated.teams[team_idx].players[i]
+                
+        # Scramble FWD      
+        if len(fwd_players) >= 2:
+            for i in range(len(fwd_players)):
+                swap_idx = random.randint(0, len(fwd_players) - 1)
+                # Check if we can swap with another team
+                if random.random() < 0.5:
+                    # Randomly select another team
+                    other_team_idx = random.randint(0, NUM_TEAMS - 1)
+                    while other_team_idx == team_idx:
+                        other_team_idx = random.randint(0, NUM_TEAMS - 1)
+                    
+                    # Get FWD players from the other team
+                    other_fwds = [p for p in mutated.teams[other_team_idx].players if p.position == 'FWD']
+                    if other_fwds:
+                        # Swap with a random FWD from the other team
+                        other_fwd = random.choice(other_fwds)
+                        mutated.teams[other_team_idx].players.remove(other_fwd)
+                        mutated.teams[team_idx].players.remove(fwd_players[i])
+                        
+                        mutated.teams[other_team_idx].add_player(fwd_players[i])
+                        mutated.teams[team_idx].add_player(other_fwd)
+                mutated.teams[team_idx].players[i], mutated.teams[team_idx].players[swap_idx] = \
+                    mutated.teams[team_idx].players[swap_idx], mutated.teams[team_idx].players[i] 
+
         return mutated
